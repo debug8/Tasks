@@ -9,44 +9,28 @@ namespace WebApplication1
 {
     public partial class Default : System.Web.UI.Page
     {
+        protected override void OnPreInit(EventArgs e)
+        {
+            OrderControl.SubmitButtonClick += OnSubmit;
+
+            OrderControl.PredefinedOrderDetails.Add("position 1");
+            OrderControl.PredefinedOrderDetails.Add("position 2");
+            OrderControl.PredefinedOrderDetails.Add("position 4");
+            OrderControl.PredefinedOrderDetails.Add("position 8");
+            OrderControl.PredefinedOrderDetails.Add("position 16");
+            OrderControl.PredefinedOrderDetails.Add("position 44");
+
+            base.OnPreInit(e);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
-        protected void SelectModeList_SelectedIndexChanged(object sender, EventArgs e)
+        private void OnSubmit(object sender, OrderEventArgs e) 
         {
-            var list = sender as ListControl;
-            if (SelectModeList.SelectedItem.Text == "predefined")
-            {
-                SubmitButton.Visible = true;
-                PredefinedPositionList.Visible = true;
-                CustomPositionText.Visible = false;
-            }
-            if (SelectModeList.SelectedItem.Text == "custom")
-            {
-                SubmitButton.Visible = true;
-                CustomPositionText.Visible = true;
-                PredefinedPositionList.Visible = false;
-            }
-        }
-
-        protected void SubmitButton_Click(object sender, EventArgs e)
-        {
-            var orderDetails = string.Empty;
-
-            if (SelectModeList.SelectedItem.Text == "predefined")
-            {
-                orderDetails = PredefinedPositionList.SelectedItem.Text;
-            }
-            if (SelectModeList.SelectedItem.Text == "custom")
-            {
-                orderDetails = CustomPositionText.Text;
-            }
-            SubmitButton.Visible = false;
-            PredefinedPositionList.Visible = false;
-            CustomPositionText.Visible = false;
-            SelectModeList.SelectedIndex = 0;
+            var orderDetails = e.OrderDetails;
         }
     }
 }
